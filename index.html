@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>ARKASA — Rangka Manusia AR</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <style>
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#10182b}
+    #intro{position:fixed;z-index:10;top:12px;left:12px;right:12px;background:rgba(9,20,43,.88);color:#fff;padding:12px 14px;border-radius:12px;font-size:14px;line-height:1.4}
+    #intro strong{color:#ffe36e}
+    #status{font-size:12px;opacity:.9;margin-top:4px}
+    .a-enter-vr{display:none!important}
+  </style>
+</head>
+<body>
+  <div id="intro"><strong>ARKASA • Rangka Manusia</strong><br>Arahkan kamera ke kartu Rangka Manusia. Pastikan kartu terlihat utuh dan pencahayaan cukup.<div id="status">Memuat pengalaman AR…</div></div>
+  <a-scene mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiLoading: no; uiScanning: yes; uiError: yes; maxTrack: 1" embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-assets>
+      <a-asset-item id="skeletonModel" src="./model-rangka.glb"></a-asset-item>
+    </a-assets>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-gltf-model src="#skeletonModel" position="0 0 0.1" rotation="0 0 0" scale="0.25 0.25 0.25"></a-gltf-model>
+    </a-entity>
+  </a-scene>
+  <script>
+    const statusEl = document.getElementById('status');
+    window.addEventListener('load', () => {
+      statusEl.textContent = 'Kamera siap. Arahkan ke kartu setelah izin kamera diberikan.';
+    });
+    document.querySelector('a-scene').addEventListener('arReady', () => {
+      statusEl.textContent = 'AR aktif — arahkan kamera ke kartu.';
+    });
+    document.querySelector('a-scene').addEventListener('arError', () => {
+      statusEl.textContent = 'AR tidak dapat dimulai. Pastikan memakai browser HP dan izinkan akses kamera.';
+    });
+  </script>
+</body>
+</html>
