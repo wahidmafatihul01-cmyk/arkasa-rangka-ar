@@ -5,38 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ARKASA • Rangka Manusia</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101a30;color:#fff;font-family:system-ui,sans-serif}
-a-scene{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:0}
-a-scene canvas{width:100%!important;height:100%!important}
-video{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;object-fit:cover!important;z-index:1!important}
-#intro{position:fixed;z-index:20;top:max(10px,env(safe-area-inset-top));left:10px;right:10px;padding:12px 14px;border-radius:12px;background:rgba(5,14,37,.92);color:#fff;line-height:1.4}
-#intro strong{color:#ffe36e}#status{font-size:13px;margin-top:5px}
-#start{display:block;margin-top:10px;padding:12px 14px;border:0;border-radius:9px;background:#ffe36e;color:#14203a;font-weight:700;font-size:15px;width:100%}#start[hidden]{display:none}
-#error{color:#ffd0d0;font-size:13px;white-space:pre-wrap;margin-top:6px}
-#cameraFallback{position:fixed;z-index:21;bottom:max(10px,env(safe-area-inset-bottom));left:10px;right:10px;font-size:12px;color:#fff;text-shadow:0 1px 3px #000;pointer-events:none}
-.a-enter-vr{display:none!important}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101a30;color:#fff;font-family:system-ui,sans-serif}
+a-scene{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:1!important}
+a-scene canvas{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:2!important}
+video{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;object-fit:cover!important;z-index:0!important}
+#intro{position:fixed;z-index:20;top:max(10px,env(safe-area-inset-top));left:10px;right:10px;padding:12px 14px;border-radius:12px;background:rgba(5,14,37,.92);color:#fff;line-height:1.4}#intro strong{color:#ffe36e}#status{font-size:13px;margin-top:5px}
+#start{display:block;margin-top:10px;padding:12px 14px;border:0;border-radius:9px;background:#ffe36e;color:#14203a;font-weight:700;font-size:15px;width:100%}#start[hidden]{display:none}#error{color:#ffd0d0;font-size:13px;white-space:pre-wrap;margin-top:6px}#cameraFallback{position:fixed;z-index:21;bottom:max(10px,env(safe-area-inset-bottom));left:10px;right:10px;font-size:12px;color:#fff;text-shadow:0 1px 3px #000;pointer-events:none}.a-enter-vr{display:none!important}
 </style>
 <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 </head>
 <body>
-<div id="intro"><strong>ARKASA • Rangka Manusia</strong><br>Arahkan kamera ke kartu Rangka Manusia. Pastikan kartu terlihat utuh dan pencahayaan cukup.
-<div id="status">Tekan tombol Mulai AR untuk mengaktifkan kamera.</div><button id="start" type="button">Mulai AR / Aktifkan Kamera</button><div id="error" role="status"></div></div>
+<div id="intro"><strong>ARKASA • Rangka Manusia</strong><br>Arahkan kamera ke kartu Rangka Manusia. Pastikan kartu terlihat utuh dan pencahayaan cukup.<div id="status">Tekan tombol Mulai AR untuk mengaktifkan kamera.</div><button id="start" type="button">Mulai AR / Aktifkan Kamera</button><div id="error" role="status"></div></div>
 <div id="cameraFallback">Jika kamera tidak muncul, pastikan izin kamera diizinkan lalu muat ulang halaman.</div>
-<a-scene id="scene" mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; uiLoading: no; uiScanning: yes; filterMinCF: 0.0001; filterBeta: 0.001" color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" embedded>
-<a-assets timeout="30000"><a-asset-item id="skeletonModel" src="./model-rangka.glb"></a-asset-item></a-assets>
-<a-camera position="0 0 0" look-controls="enabled: false" cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-camera>
-<a-entity mindar-image-target="targetIndex: 0"><a-gltf-model id="skeleton" class="clickable" src="#skeletonModel" position="0 0 0.1" rotation="0 0 0" scale="0.25 0.25 0.25"></a-gltf-model></a-entity>
+<a-scene id="scene" mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; uiLoading: no; uiScanning: yes; filterMinCF: 0.0001; filterBeta: 0.001" color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true; alpha: true; antialias: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" embedded>
+<a-assets timeout="60000"><a-asset-item id="skeletonModel" src="./model-rangka.glb"></a-asset-item></a-assets>
+<a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+<a-entity mindar-image-target="targetIndex: 0"><a-gltf-model id="skeleton" src="#skeletonModel" position="0 0 0.05" rotation="0 0 0" scale="0.25 0.25 0.25"></a-gltf-model></a-entity>
 </a-scene>
 <script>
-const statusEl=document.getElementById('status'),errorEl=document.getElementById('error'),startBtn=document.getElementById('start'),sceneEl=document.getElementById('scene');let started=false;
-function setStatus(message){statusEl.textContent=message}
-startBtn.addEventListener('click',async()=>{if(started)return;errorEl.textContent='';startBtn.disabled=true;setStatus('Memeriksa kamera dan memulai AR…');try{if(!window.isSecureContext)throw new Error('Halaman harus dibuka melalui HTTPS. Buka tautan GitHub Pages yang diawali https://.');if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('Browser ini tidak menyediakan akses kamera. Coba buka tautan langsung di Chrome.');const testStream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'}}});testStream.getTracks().forEach(track=>track.stop());const arSystem=sceneEl.systems&&sceneEl.systems['mindar-image-system'];if(!arSystem)throw new Error('Sistem MindAR belum siap. Muat ulang halaman dan coba lagi.');await arSystem.start();started=true;startBtn.hidden=true;setStatus('Kamera aktif. Arahkan kamera ke kartu sampai kartu dikenali.')}catch(err){console.error(err);startBtn.disabled=false;setStatus('AR belum berhasil dimulai.');errorEl.textContent=(err&&err.message)?err.message:String(err)}});
-sceneEl.addEventListener('arReady',()=>setStatus('AR siap. Arahkan kamera ke kartu Rangka Manusia.'));
-sceneEl.addEventListener('arError',event=>{const detail=event.detail||{};errorEl.textContent='MindAR mengalami masalah saat memulai kamera. Periksa izin kamera dan coba muat ulang.';if(detail.error)errorEl.textContent+='\n'+detail.error;setStatus('AR gagal dimulai.');startBtn.hidden=false;startBtn.disabled=false});
-sceneEl.addEventListener('targetFound',()=>setStatus('Kartu terdeteksi! Model rangka sedang ditampilkan.'));
-sceneEl.addEventListener('targetLost',()=>setStatus('Kartu belum terlihat. Arahkan kamera kembali ke kartu.'));
-sceneEl.addEventListener('loaded',()=>setStatus('Halaman siap. Tekan Mulai AR untuk mengaktifkan kamera.'));
+(() => {
+ const statusEl=document.getElementById('status'), errorEl=document.getElementById('error'), startBtn=document.getElementById('start'), sceneEl=document.getElementById('scene'), modelEl=document.getElementById('skeleton');
+ let started=false; const setStatus=(message)=>{statusEl.textContent=message;};
+ modelEl.addEventListener('model-loaded',()=>{setStatus('Model rangka berhasil dimuat. Arahkan kamera ke kartu.');console.log('ARKASA: model GLB berhasil dimuat');});
+ modelEl.addEventListener('model-error',(event)=>{console.error('ARKASA: gagal memuat model GLB',event);errorEl.textContent='Model rangka gagal dimuat. Periksa file model-rangka.glb di repositori GitHub.';});
+ startBtn.addEventListener('click',async()=>{if(started)return;errorEl.textContent='';startBtn.disabled=true;setStatus('Mengaktifkan kamera dan AR…');try{if(!window.isSecureContext)throw new Error('Buka situs GitHub Pages melalui HTTPS.');if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('Browser tidak menyediakan akses kamera. Buka tautan langsung di Chrome.');const stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'}}});stream.getTracks().forEach(track=>track.stop());const arSystem=sceneEl.systems&&sceneEl.systems['mindar-image-system'];if(!arSystem)throw new Error('MindAR belum siap. Muat ulang halaman lalu coba lagi.');await arSystem.start();started=true;startBtn.hidden=true;setStatus('Kamera aktif. Arahkan kamera ke kartu sampai dikenali.');}catch(err){console.error(err);startBtn.disabled=false;setStatus('AR belum berhasil dimulai.');errorEl.textContent=err&&err.message?err.message:String(err);}});
+ sceneEl.addEventListener('arReady',()=>setStatus('AR siap. Arahkan kamera ke kartu Rangka Manusia.'));
+ sceneEl.addEventListener('arError',(event)=>{const detail=event.detail||{};errorEl.textContent='MindAR bermasalah saat memulai kamera. Periksa izin kamera dan muat ulang halaman.';if(detail.error)errorEl.textContent+='\n'+detail.error;setStatus('AR gagal dimulai.');startBtn.hidden=false;startBtn.disabled=false;});
+ sceneEl.addEventListener('targetFound',()=>setStatus('Kartu terdeteksi! Jika model tidak terlihat, periksa pesan pemuatan model.'));
+ sceneEl.addEventListener('targetLost',()=>setStatus('Kartu belum terlihat. Arahkan kamera kembali ke kartu.'));
+ sceneEl.addEventListener('loaded',()=>setStatus('Halaman siap. Tekan Mulai AR untuk mengaktifkan kamera.'));
+})();
 </script>
 </body></html>
